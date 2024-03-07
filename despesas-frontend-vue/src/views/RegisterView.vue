@@ -1,44 +1,42 @@
 <template>
   <div class="form-container">
-    <form @submit.prevent="login" class="login-form">
+    <form @submit.prevent="register" class="register-form">
+      <input type="name" v-model="name" placeholder="Name" required />
       <input type="email" v-model="email" placeholder="Email" required />
       <input type="password" v-model="password" placeholder="Password" required />
-      <button type="submit">Login</button>
+      <button type="submit">Register</button>
     </form>
   </div>
 </template>
 
 <script>
-import axios from '@/axios';
+import axios from '@/axios'
 
 export default {
   data() {
     return {
+      name: "",
       email: "",
-      password: "",
+      password: ""
     };
   },
-  name: 'LoginView',
   methods: {
-    async login() {
+    async register() {
       try {
-        const response = await axios.post("/login", {
+        const response = await axios.post("/register", {
+          name: this.name,
           email: this.email,
           password: this.password
         });
-        if(response.data.token) {
-          localStorage.setItem('token', response.data.token);
+        console.log(response)
+        this.$router.push('/login');
+      } catch(error) {
+        console.error("An erro ocurred: ", error);
+        if (error.response) {
+          console.error("Error details: ", error.response.data)
         }
-
-        this.$store.commit('LOGIN');
-
-        this.$router.push('/');
-
-      }catch(error) {
-        console.error("An error ocurred on login");
       }
-
-    }  
+    }
   }
 }
 </script>
@@ -51,7 +49,7 @@ export default {
 }
 
 
-.login-form {
+.register-form {
   margin: 50px 0 0 0;
   display: flex;
   flex-direction: column;
@@ -63,7 +61,7 @@ export default {
 }
 
 
-.login-form input, .login-form button {
+.register-form input, .register-form button {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -71,7 +69,7 @@ export default {
 }
 
 
-.login-form button {
+.register-form button {
   background-color: #007BFF;
   color: white;
   cursor: pointer;

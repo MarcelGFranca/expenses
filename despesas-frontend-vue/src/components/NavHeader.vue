@@ -7,13 +7,22 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav me-auto">
-          <li class="nav-item">
+          <li v-if="isLoggedIn" class="nav-item">
             <router-link class="nav-link active" to="/">Despesas
               <span class="visually-hidden">(current)</span>
             </router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="isLoggedIn">
             <router-link class="nav-link" to="/expense-add">Adicionar Despesa</router-link>
+          </li>
+          <li class="nav-item" v-if="!isLoggedIn">
+            <router-link class="nav-link" to="/login">Login</router-link>
+          </li>
+          <li class="nav-item" v-if="!isLoggedIn">
+            <router-link class="nav-link" to="/register">Register</router-link>
+          </li>
+          <li class="nav-item" v-if="isLoggedIn">
+            <a class="nav-link" href="#" @click="logout" v-if="isLoggedIn">Logout</a>
           </li>
         </ul>
       </div>
@@ -22,7 +31,15 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 export default {
-  name: 'NavHeader'
+  name: 'NavHeader',
+  computed: {
+    ...mapState(['isLoggedIn'])
+  },
+  methods: {
+    ...mapActions(['logout'])
+  }
 }
 </script>

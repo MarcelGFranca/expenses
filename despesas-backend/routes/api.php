@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,10 @@ use App\Http\Controllers\ExpensesController;
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) { */
 /*     return $request->user(); */
 /* }); */
+
+Route::post('/register', [AuthCOntroller::class, 'register']);
+Route::post('/login', [AuthCOntroller::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::post('/expenses/store', [ExpensesController::class, 'store']);
 Route::get('/expenses/list', [ExpensesController::class, 'list']);
